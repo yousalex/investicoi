@@ -1,0 +1,55 @@
+{
+  "researchItems": [
+    {
+      "id": "1",
+      "title": "Mis notas sobre \"Pensar, Rápido y Lento\"",
+      "url": "/cortex/thinking-fast-and-slow-notes",
+      "type": "Nota",
+      "createdDate": "2025-08-02",
+      "source": "Personal",
+      "keywords": [
+        "Resumen de Libro",
+        "Psicología",
+        "Toma de Decisiones",
+        "Actividad Reciente"
+      ],
+      "pitch": "Puntos clave y reflexiones personales sobre el libro de Daniel Kahneman.",
+      "sharedBy": "Usuario Actual"
+    },
+    {
+      "id": "2",
+      "title": "Idea: Un CRM personal para gestionar contactos",
+      "url": "/cortex/personal-crm-idea",
+      "type": "Idea",
+      "createdDate": "2025-08-01",
+      "source": "Personal",
+      "keywords": [
+        "Idea de Proyecto",
+        "CRM",
+        "Productividad",
+        "Actividad Reciente"
+      ],
+      "pitch": "Un CRM sencillo para llevar un registro de relaciones personales y profesionales.",
+      "sharedBy": "Usuario Actual"
+    }
+  ],
+  "integrations": {
+    "googleDrive": false,
+    "notion": false,
+    "github": false
+  },
+  "community": [
+    {
+      "id": "5453",
+      "author": "Anonymous",
+      "text": "jhh",
+      "rating": 4
+    },
+    {
+      "id": "973f",
+      "author": "Anonymous",
+      "text": "fd",
+      "rating": 2
+    }
+  ]
+}
