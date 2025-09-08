@@ -1,12 +1,22 @@
+version: 0.2
+
 phases:
   install:
     runtime-versions:
       nodejs: 20
     commands:
       - echo "Instalando dependencias (incluyendo devDependencies)..."
-      - npm install --production=false
+      - npm install
   build:
     commands:
       - echo "Construyendo proyecto..."
       - npm run build
 
+artifacts:
+  files:
+    - '**/*'
+  base-directory: dist
+
+cache:
+  paths:
+    - node_modules/**/*
