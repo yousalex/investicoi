@@ -5,20 +5,18 @@ phases:
     runtime-versions:
       nodejs: 20
     commands:
-      - echo "Instalando dependencias..."
-      - npm ci           # Instala todas las dependencias según package-lock.json
-      - npm install      # Asegura instalar devDependencies (autoprefixer, tailwindcss, etc.)
-
-  pre_build:
-    commands:
-      - echo "Preparando build..."
-
+      - echo "Instalando dependencias (incluyendo devDependencies)..."
+      - npm install
   build:
     commands:
-      - echo "Ejecutando build de Vite..."
+      - echo "Construyendo proyecto..."
       - npm run build
 
 artifacts:
   files:
     - '**/*'
-  base-directory: dist  # Carpeta de salida generada por Vite
+  base-directory: dist
+
+cache:
+  paths:
+    - node_modules/**/* 
