@@ -26,6 +26,8 @@ artifacts:
   files:
     - '**/*'
   base-directory: deploy
+    discard-paths: no
+
 
 cache:
   paths:
