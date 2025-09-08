@@ -1,4 +1,3 @@
-
 version: 0.2
 
 phases:
@@ -15,19 +14,18 @@ phases:
       - npm run build
       - echo "Preparando carpeta de despliegue..."
       - rm -rf deploy || true
-      - mkdir deploy
-      - cp -r dist/* deploy/
+      - mkdir -p deploy
+      - cp -r dist deploy/               # copia la carpeta 'dist' entera (deploy/dist)
       - cp package.json deploy/
       - cp server.js deploy/
-      - # opcional: incluye otros archivos que necesite tu app
       - ls -la deploy
+      - ls -la deploy/dist
 
 artifacts:
   files:
     - '**/*'
   base-directory: deploy
-    discard-paths: no
-
+  discard-paths: no
 
 cache:
   paths:
