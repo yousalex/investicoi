@@ -6,11 +6,12 @@ phases:
       nodejs: 20
     commands:
       - echo "Instalando dependencias (incluyendo devDependencies)..."
-      - npm install
+      - npm install --production=false
   build:
     commands:
       - echo "Construyendo proyecto..."
       - npm run build
+      - ls -la dist
 
 artifacts:
   files:
