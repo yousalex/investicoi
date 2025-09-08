@@ -1,3 +1,4 @@
+
 version: 0.2
 
 phases:
@@ -7,16 +8,24 @@ phases:
     commands:
       - echo "Instalando dependencias (incluyendo devDependencies)..."
       - npm install --production=false
+
   build:
     commands:
-      - echo "Construyendo proyecto..."
+      - echo "Ejecutando build de Vite..."
       - npm run build
-      - ls -la dist
+      - echo "Preparando carpeta de despliegue..."
+      - rm -rf deploy || true
+      - mkdir deploy
+      - cp -r dist/* deploy/
+      - cp package.json deploy/
+      - cp server.js deploy/
+      - # opcional: incluye otros archivos que necesite tu app
+      - ls -la deploy
 
 artifacts:
   files:
     - '**/*'
-  base-directory: dist
+  base-directory: deploy
 
 cache:
   paths:
