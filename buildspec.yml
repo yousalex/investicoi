@@ -5,28 +5,16 @@ phases:
     runtime-versions:
       nodejs: 20
     commands:
-      - echo "Instalando dependencias (incluyendo devDependencies)..."
-      - npm install --production=false
+      - echo Installing dependecies...
+      - npm ci --legacy-peer-deps
 
   build:
     commands:
-      - echo "Ejecutando build de Vite..."
+      - echo Building the React app...
       - npm run build
-      - echo "Preparando carpeta de despliegue..."
-      - rm -rf deploy || true
-      - mkdir -p deploy
-      - cp -r dist deploy/               # copia la carpeta 'dist' entera (deploy/dist)
-      - cp package.json deploy/
-      - cp server.js deploy/
-      - ls -la deploy
-      - ls -la deploy/dist
 
 artifacts:
   files:
     - '**/*'
-  base-directory: deploy
+  base-directory: dist
   discard-paths: no
-
-cache:
-  paths:
-    - node_modules/**/*
