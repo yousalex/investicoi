@@ -1,0 +1,42 @@
+name: CI/CD — Build & Deploy to Elastic Beanstalk
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Show build output
+        run: ls -la
+
+      - name: Generate deployment package
+        run: |
+          # Crea el zip excluyendo node_modules, .git y la carpeta .github
+          zip -r investicoi.zip . -x ".git/*" "node_modules/*" ".github/*"
+
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v22
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: "investic"
+          environment_name: "investic-env-1"
+          version_label: ${{ github.sha }}
+          region: "us-east-1"
+          deployment_package: "investicoi.zip"
