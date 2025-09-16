@@ -45,19 +45,12 @@ serve(async (req) => {
       formData.append("plan_price", profile.plan_limits?.price_monthly?.toString() || "0");
 
       try {
-        const response = await fetch("https://gzip-ac-shift-earth.trycloudflare.com/webhook-test/enviar", {
+        const response = await fetch("http://localhost:5678/webhook-test/enviar", {
           method: "POST",
           body: formData,
         });
 
-        console.log(`Sent data for user ${profile.email} to localhost, response status:`, response.status);
-
-        const response2 = await fetch("https://gzip-ac-shift-earth.trycloudflare.com/webhook-test/enviar", {
-          method: "POST",
-          body: formData,
-        });
-
-        console.log(`Sent data for user ${profile.email} to public n8n, response status:`, response2.status);
+        console.log(`Sent data for user ${profile.email}, response status:`, response.status);
       } catch (webhookError) {
         console.error(`Failed to send data for user ${profile.email}:`, webhookError);
       }

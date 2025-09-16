@@ -48,9 +48,10 @@ interface ImportSourceCardProps {
   source: ImportSource;
   onClick: () => void;
   isActive: boolean;
+  disabled: boolean;
 }
 
-const ImportSourceCard: React.FC<ImportSourceCardProps> = ({ source, onClick, isActive }) => {
+const ImportSourceCard: React.FC<ImportSourceCardProps> = ({ source, onClick, isActive, disabled }) => {
   const [isHovered, setIsHovered] = useState(false);
   
   const getIcon = () => {
@@ -67,11 +68,12 @@ const ImportSourceCard: React.FC<ImportSourceCardProps> = ({ source, onClick, is
   return (
     <div 
       className={cn(
-        "glass-panel p-4 rounded-xl cursor-pointer transition-all duration-300",
+        "glass-panel p-4 rounded-xl transition-all duration-300",
         isActive ? "ring-2 ring-primary" : "",
-        isHovered ? "translate-y-[-4px] shadow-md" : ""
+        isHovered && !disabled ? "translate-y-[-4px] shadow-md" : "",
+        disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
       )}
-      onClick={onClick}
+      onClick={disabled ? undefined : onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -99,29 +101,28 @@ export const ImportPanel: React.FC = () => {
   console.log("ImportPanel: isFreePlan", isFreePlan);
 
   useEffect(() => {
-    if (isFreePlan && selectedSource === 'text') {
-      setSelectedSource(null); // Reset selectedSource if free plan and 'text' is selected
+    if (isFreePlan && (selectedSource === 'text' || selectedSource === 'url')) {
+      setSelectedSource(null); // Reset selectedSource if free plan and 'text' or 'url' is selected
     }
   }, [isFreePlan, selectedSource]);
 
-  const filteredImportSources = importSources.filter(source => {
-    if (isFreePlan && source.id === 'text') {
-      return false; // Exclude 'text' source for free plan users
-    }
-    return true;
-  });
+  const filteredImportSources = importSources;
   
   return (
     <div className="w-full max-w-4xl mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {filteredImportSources.map(source => (
-          <ImportSourceCard
-            key={source.id}
-            source={source}
-            onClick={() => setSelectedSource(source.id)}
-            isActive={selectedSource === source.id}
-          />
-        ))}
+        {filteredImportSources.map(source => {
+          const isDisabled = isFreePlan && (source.id === 'text' || source.id === 'url');
+          return (
+            <ImportSourceCard
+              key={source.id}
+              source={source}
+              onClick={() => setSelectedSource(source.id)}
+              isActive={selectedSource === source.id}
+              disabled={isDisabled}
+            />
+          )
+        })}
       </div>
       
       <AnimatedTransition
@@ -178,7 +179,7 @@ export const ImportPanel: React.FC = () => {
           </div>
         )}
         
-        {selectedSource === 'url' && (
+        {selectedSource === 'url' && !isFreePlan && (
           <div className="space-y-4">
             <h3 className="text-xl font-medium">Import from URL</h3>
             <p className="text-muted-foreground">

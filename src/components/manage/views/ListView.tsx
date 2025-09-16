@@ -2,7 +2,10 @@
 import React from 'react';
 import { Check, Square } from 'lucide-react';
 import { CortexItem } from '../cortex-data';
+import { LinkPreview } from '@/components/landing/LinkPreview';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/contexts/AuthContext';
+import { Link } from 'react-router-dom';
 
 interface ListViewProps {
   items: CortexItem[];
@@ -15,6 +18,8 @@ const ListView = ({
   selectedItems = [], 
   onSelectItem = () => {} 
 }: ListViewProps) => {
+  const { profile } = useAuth();
+
   return (
     <div className="flex flex-col gap-3 p-4">
       {items.map((item) => {
@@ -63,7 +68,14 @@ const ListView = ({
               </div>
             </div>
             <div className="flex items-center">
-              <a href={item.url} className="text-sm text-blue-500 hover:underline">{item.url}</a>
+              {profile?.plan === 'gratuito' ? (
+                <div className="text-sm text-muted-foreground">
+                  Actualiza tu plan para ver la vista previa. 
+                  <Link to="/planes-de-pago" className="text-blue-500 hover:underline">Ver planes</Link>
+                </div>
+              ) : (
+                <LinkPreview url={item.url} description={item.title} />
+              )}
             </div>
           </div>
         );

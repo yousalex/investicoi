@@ -95,14 +95,14 @@ const AppRoutes = () => {
           </PageTransition>
         } 
       /> */}
-      <Route 
+      {/* <Route 
         path="/search" 
         element={
           <PageTransition>
             <SearchPage />
           </PageTransition>
         } 
-      />
+      /> */}
       {/* <Route 
         path="/settings" 
         element={
