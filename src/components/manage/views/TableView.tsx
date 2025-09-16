@@ -12,6 +12,9 @@ import {
 } from "@/components/ui/table";
 import { CortexItem, columns } from '../cortex-data';
 import { cn } from '@/lib/utils';
+import { LinkPreview } from '@/components/landing/LinkPreview';
+import { useAuth } from '@/contexts/AuthContext';
+import { Link } from 'react-router-dom';
 
 interface TableViewProps {
   items: CortexItem[];
@@ -24,6 +27,8 @@ const TableView = ({
   selectedItems = [], 
   onSelectItem = () => {} 
 }: TableViewProps) => {
+  const { profile } = useAuth();
+
   return (
     <Table>
       <TableHeader>
@@ -72,8 +77,15 @@ const TableView = ({
                 </div>
               </TableCell>
               <TableCell className="font-medium">{item.title}</TableCell>
-              <TableCell className="text-blue-500 hover:underline">
-                <a href={item.url}>{item.url}</a>
+              <TableCell>
+                {profile?.plan === 'gratuito' ? (
+                  <div className="text-sm text-muted-foreground">
+                    Actualiza tu plan para ver la vista previa. 
+                    <Link to="/planes-de-pago" className="text-blue-500 hover:underline">Ver planes</Link>
+                  </div>
+                ) : (
+                  <LinkPreview url={item.url} description={item.title} />
+                )}
               </TableCell>
               <TableCell>
                 <span className="px-2 py-1 rounded-full bg-primary/10 text-xs font-medium">

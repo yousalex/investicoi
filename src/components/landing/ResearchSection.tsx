@@ -52,7 +52,7 @@ export const ResearchSection = () => {
 
   useEffect(() => {
     if (isFreePlan) {
-      setTextInput(''); // Clear text input if user is on free plan
+      setUrlInput(''); // Clear url input if user is on free plan
     }
   }, [isFreePlan]);
 
@@ -84,14 +84,14 @@ export const ResearchSection = () => {
         formData.append('image', selectedFile);
         formData.append('type', 'image');
       } else if (activeTab === 'text' && textInput.trim()) {
-        if (isFreePlan) {
-          toast.error('La investigación por texto no está disponible en el plan gratuito.');
-          setIsLoading(false);
-          return;
-        }
         formData.append('text', textInput);
         formData.append('type', 'text');
       } else if (activeTab === 'url' && urlInput.trim()) {
+        if (isFreePlan) {
+          toast.error('La investigación por URL no está disponible en el plan gratuito.');
+          setIsLoading(false);
+          return;
+        }
         formData.append('url', urlInput);
         formData.append('type', 'url');
       } else {
@@ -104,8 +104,7 @@ export const ResearchSection = () => {
         formData.append('user_id', uid);
       }
 
-            const researchWebhookUrl = import.meta.env.VITE_N8N_RESEARCH_WEBHOOK_URL || 'https://gzip-ac-shift-earth.trycloudflare.com/webhook-test/enviar';
-      const response = await fetch(researchWebhookUrl, {
+      const response = await fetch('http://localhost:5678/webhook/enviar', {
         method: 'POST',
         body: formData,
       });
@@ -293,11 +292,11 @@ export const ResearchSection = () => {
                   <Upload size={16} />
                   Imagen
                 </TabsTrigger>
-                <TabsTrigger value="text" className="flex items-center gap-2" disabled={isFreePlan}> {/* Add disabled prop */}
+                <TabsTrigger value="text" className="flex items-center gap-2">
                   <Type size={16} />
                   Texto
                 </TabsTrigger>
-                <TabsTrigger value="url" className="flex items-center gap-2">
+                <TabsTrigger value="url" className="flex items-center gap-2" disabled={isFreePlan}>
                   <Link size={16} />
                   URL
                 </TabsTrigger>
@@ -342,7 +341,6 @@ export const ResearchSection = () => {
                     value={textInput}
                     onChange={(e) => setTextInput(e.target.value)}
                     className="min-h-[120px]"
-                    disabled={isFreePlan} /* Add disabled prop */
                   />
                   <p className="text-sm text-muted-foreground">
                     Describe cualquier tema y obtendrás investigación completa con enlaces relevantes
@@ -357,6 +355,7 @@ export const ResearchSection = () => {
                     value={urlInput}
                     onChange={(e) => setUrlInput(e.target.value)}
                     type="url"
+                    disabled={isFreePlan}
                   />
                   <p className="text-sm text-muted-foreground">
                     Pega cualquier URL y obtendrás análisis, resumen y contenido relacionado
@@ -388,7 +387,7 @@ export const ResearchSection = () => {
               {/* Caja de Respuesta del Webhook */}
               {sections.length > 0 && (
                 <div className="mt-8 animate-fade-in">
-                  <FormattedResearchResult sections={sections} userPlan={''} />
+                  <FormattedResearchResult sections={sections} userPlan={profile?.plan || ''} />
                 </div>
               )}
             </Tabs>

@@ -186,8 +186,7 @@ export const Search: React.FC = () => {
         if (user?.email) formData.append('user_email', user.email);
         if (currentChatId) formData.append('sessionId', currentChatId);
 
-        const webhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL || 'https://gzip-ac-shift-earth.trycloudflare.com/webhook-test/enviar';
-        const response = await fetch(webhookUrl, {
+        const response = await fetch('http://localhost:5678/webhook/223e4a01-1430-46d0-a932-b514efdfbe47/chat', {
           method: 'POST',
           body: formData
         });

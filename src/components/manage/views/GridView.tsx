@@ -5,6 +5,10 @@ import { CortexItem } from '../cortex-data';
 import { Check, Square } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+import { LinkPreview } from '@/components/landing/LinkPreview';
+import { useAuth } from '@/contexts/AuthContext';
+import { Link } from 'react-router-dom';
+
 interface GridViewProps {
   items: CortexItem[];
   selectedItems?: string[];
@@ -16,6 +20,8 @@ const GridView = ({
   selectedItems = [], 
   onSelectItem = () => {} 
 }: GridViewProps) => {
+  const { profile } = useAuth();
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
       {items.map((item) => {
@@ -63,7 +69,14 @@ const GridView = ({
                   </span>
                 ))}
               </div>
-              <a href={item.url} className="text-sm text-blue-500 hover:underline">{item.url}</a>
+              {profile?.plan === 'gratuito' ? (
+                <div className="text-sm text-muted-foreground">
+                  Actualiza tu plan para ver la vista previa. 
+                  <Link to="/planes-de-pago" className="text-blue-500 hover:underline">Ver planes</Link>
+                </div>
+              ) : (
+                <LinkPreview url={item.url} description={item.title} />
+              )}
             </div>
           </Card>
         );

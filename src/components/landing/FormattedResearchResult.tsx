@@ -80,12 +80,20 @@ export const FormattedResearchResult = ({ sections, userPlan }: FormattedResearc
       'texto_redactado',
     ];
 
+    const isFreePlan = userPlan === 'gratuito';
+
     const mappedSections = sections
       .map(section => ({
         ...section,
         displayTitle: titleMapping[section.title.toLowerCase().replace(/ /g, '_')] || section.title,
       }))
-      .filter(section => titleMapping[section.title.toLowerCase().replace(/ /g, '_')]);
+      .filter(section => {
+        const key = section.title.toLowerCase().replace(/ /g, '_');
+        if (isFreePlan && (key === 'resumen_de_razonamiento' || key === 'information_extracted')) {
+          return false;
+        }
+        return titleMapping[key];
+      });
 
     mappedSections.sort((a, b) => {
       const indexA = order.indexOf(a.title.toLowerCase().replace(/ /g, '_'));

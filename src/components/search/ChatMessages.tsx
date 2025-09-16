@@ -14,7 +14,7 @@ const FormattedAIResponse: React.FC<FormattedAIResponseProps> = ({ content }) =>
   
   // Extract different types of links
   const extractLinks = (text: string) => {
-    const webLinkRegex = /https?:\/\/[^\s\)]+/g;
+    const webLinkRegex = /https?:\[\/\/][^\s\)]+/g;
     const videoLinkRegex = /🔗 Resultados útiles encontrados en video_links[\s\S]*?(?=🔗|$)/g;
     
     const webLinks = text.match(webLinkRegex) || [];
